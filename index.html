@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +15,6 @@ button{background:#2874f0;color:white;border:0;padding:12px 18px;
 border-radius:5px;cursor:pointer}
 button:hover{background:#1257c7}
 
-/* Login */
 #loginPage{width:350px;background:white;margin:70px auto;padding:25px;
 border-radius:10px;box-shadow:0 2px 10px #bbb}
 #loginPage h2{text-align:center;color:#2874f0;margin-bottom:20px}
@@ -82,13 +82,12 @@ Demo: admin / 1234
 </p>
 </div>
 
-<!-- MAIN PAGE -->
 <div id="mainPage">
 
 <nav>
-<a href="#">Home</a>
-<a href="#products">Products</a>
-<a href="#sell">Sell Product</a>
+<a href="#" onclick="showPage('homePage'); return false;">Home</a>
+<a href="#" onclick="showPage('productsPage'); return false;">Products</a>
+<a href="#" onclick="showPage('sellPage'); return false;">Sell Product</a>
 </nav>
 
 <div class="container">
@@ -97,6 +96,7 @@ Demo: admin / 1234
 <button onclick="logout()">Logout</button>
 </div>
 
+<div id="productsPage">
 <div class="search">
 <input type="text" id="search"
 placeholder="Search products...">
@@ -116,7 +116,9 @@ placeholder="Search products...">
 <br>
 
 <div class="products" id="productList"></div>
+</div>
 
+<div id="sellPage" style="display:none">
 <div class="sell" id="sell">
 <h2>Sell Your Product</h2>
 
@@ -148,6 +150,7 @@ placeholder="Product Description" required></textarea>
 <button type="submit">Post Advertisement</button>
 
 </form>
+</div>
 </div>
 
 </div>
@@ -196,8 +199,6 @@ description:"Collection of engineering textbooks."
 ];
 
 
-/* LOGIN */
-
 function login(event){
 
 event.preventDefault();
@@ -209,6 +210,7 @@ if(username=="admin" && password=="1234"){
 
 document.getElementById("loginPage").style.display="none";
 document.getElementById("mainPage").style.display="block";
+showPage("productsPage");
 
 displayProducts();
 
@@ -223,7 +225,20 @@ document.getElementById("loginMsg").innerHTML=
 }
 
 
-/* LOGOUT */
+function showPage(pageId){
+  document.getElementById("productsPage").style.display =
+    pageId === "productsPage" ? "block" : "none";
+  document.getElementById("sellPage").style.display =
+    pageId === "sellPage" ? "block" : "none";
+
+  if(pageId === "homePage" || pageId === "productsPage"){
+    document.getElementById("productsPage").style.display = "block";
+    displayProducts();
+  }
+
+  window.scrollTo(0, 0);
+}
+
 
 function logout(){
 
@@ -235,8 +250,6 @@ document.getElementById("password").value="";
 
 }
 
-
-/* DISPLAY PRODUCTS */
 
 function displayProducts(list=products){
 
@@ -286,8 +299,6 @@ Contact Seller
 }
 
 
-/* SEARCH */
-
 function searchProducts(){
 
 let text=document.getElementById("search")
@@ -312,8 +323,6 @@ displayProducts(result);
 
 }
 
-
-/* ADD PRODUCT */
 
 function addProduct(event){
 
@@ -344,13 +353,11 @@ alert("Product advertisement posted successfully!");
 
 document.querySelector("#sell form").reset();
 
-document.getElementById("products")
-.scrollIntoView();
+showPage("productsPage");
+document.getElementById("products").scrollIntoView();
 
 }
 
-
-/* CONTACT SELLER */
 
 function contactSeller(name){
 
